@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://c5s7406nngvh1"]
+[gd_scene load_steps=25 format=3 uid="uid://c5s7406nngvh1"]
 
 [ext_resource type="PackedScene" uid="uid://bvnenjekuy77y" path="res://Player.tscn" id="1_f3sb7"]
 [ext_resource type="PackedScene" uid="uid://bjwb8ycltqxd1" path="res://Enemy.tscn" id="2_fj7yv"]
@@ -48,6 +48,54 @@ bottom_radius = 20.0
 height = 0.3
 radial_segments = 256
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ctcih"]
+albedo_color = Color(0.7514, 0.78, 0.6084, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_6rkd2"]
+size = Vector3(0.2, 0.1, 0.1)
+
+[sub_resource type="Curve" id="Curve_ql5c0"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.454545, 0.910112), -0.507058, -0.507058, 0, 0, Vector2(0.630682, 0.382023), -3.62547, -3.62547, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="PackedScene" id="PackedScene_aqk2v"]
+resource_local_to_scene = true
+_bundled = {
+"conn_count": 0,
+"conns": PackedInt32Array(),
+"editable_instances": [],
+"names": PackedStringArray("LandParticles", "material_override", "emitting", "amount", "lifetime", "one_shot", "explosiveness", "randomness", "mesh", "spread", "flatness", "gravity", "initial_velocity_min", "initial_velocity_max", "damping_min", "damping_max", "scale_amount_curve", "CPUParticles3D"),
+"node_count": 1,
+"node_paths": [],
+"nodes": PackedInt32Array(-1, -1, 17, 0, -1, 16, 1, 0, 2, 1, 3, 2, 4, 3, 5, 4, 6, 5, 7, 6, 8, 7, 9, 8, 10, 5, 11, 9, 12, 10, 13, 11, 14, 12, 15, 13, 16, 14, 0),
+"variants": [SubResource("StandardMaterial3D_ctcih"), false, 20, 0.65, true, 1.0, 0.6, SubResource("BoxMesh_6rkd2"), 180.0, Vector3(0, 0, 0), 2.5, 3.45, 6.875, 6.915, SubResource("Curve_ql5c0")],
+"version": 3
+}
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dwbse"]
+albedo_color = Color(0.7514, 0.78, 0.6084, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_pkg7o"]
+size = Vector3(0.2, 0.1, 0.1)
+
+[sub_resource type="Curve" id="Curve_gbfbk"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.454545, 0.910112), -0.507058, -0.507058, 0, 0, Vector2(0.630682, 0.382023), -3.62547, -3.62547, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="PackedScene" id="PackedScene_ioo17"]
+resource_local_to_scene = true
+_bundled = {
+"conn_count": 0,
+"conns": PackedInt32Array(),
+"editable_instances": [],
+"names": PackedStringArray("LandParticles", "material_override", "emitting", "amount", "lifetime", "one_shot", "explosiveness", "randomness", "mesh", "spread", "flatness", "gravity", "initial_velocity_min", "initial_velocity_max", "damping_min", "damping_max", "scale_amount_curve", "CPUParticles3D"),
+"node_count": 1,
+"node_paths": [],
+"nodes": PackedInt32Array(-1, -1, 17, 0, -1, 16, 1, 0, 2, 1, 3, 2, 4, 3, 5, 4, 6, 5, 7, 6, 8, 7, 9, 8, 10, 5, 11, 9, 12, 10, 13, 11, 14, 12, 15, 13, 16, 14, 0),
+"variants": [SubResource("StandardMaterial3D_dwbse"), false, 20, 0.65, true, 1.0, 0.6, SubResource("BoxMesh_pkg7o"), 180.0, Vector3(0, 0, 0), 2.5, 3.45, 6.875, 6.915, SubResource("Curve_gbfbk")],
+"version": 3
+}
+
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tlwt5"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_036b0"]
@@ -80,9 +128,11 @@ mesh = SubResource("CylinderMesh_fj7yv")
 
 [node name="Player" parent="." instance=ExtResource("1_f3sb7")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 15)
+land_particles_tscn = SubResource("PackedScene_aqk2v")
 
 [node name="Enemy" parent="." instance=ExtResource("2_fj7yv")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -16.905)
+land_particles_tscn = SubResource("PackedScene_ioo17")
 
 [node name="GUI" type="Control" parent="."]
 layout_mode = 3
@@ -288,7 +338,8 @@ theme_override_styles/separator = SubResource("StyleBoxEmpty_aqk2v")
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
 toggle_mode = true
-text = "Disabled"
+button_pressed = true
+text = "Enabled"
 
 [node name="Block" type="Label" parent="GUI/Menus/Settings/SettingsGrid"]
 layout_mode = 2
@@ -305,7 +356,8 @@ theme_override_styles/separator = SubResource("StyleBoxEmpty_aqk2v")
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
 toggle_mode = true
-text = "Disabled"
+button_pressed = true
+text = "Enabled"
 
 [node name="WTap" type="Label" parent="GUI/Menus/Settings/SettingsGrid"]
 layout_mode = 2
@@ -322,7 +374,8 @@ theme_override_styles/separator = SubResource("StyleBoxEmpty_aqk2v")
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
 toggle_mode = true
-text = "Disabled"
+button_pressed = true
+text = "Enabled"
 
 [node name="InstantRematch" type="Label" parent="GUI/Menus/Settings/SettingsGrid"]
 layout_mode = 2

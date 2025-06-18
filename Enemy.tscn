@@ -3,13 +3,13 @@
 [ext_resource type="PackedScene" uid="uid://basw678sew3rr" path="res://Entity.tscn" id="1_ek4vt"]
 [ext_resource type="Script" uid="uid://nj88tja5jq8t" path="res://enemy.gd" id="2_fnp7o"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ctcih"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dwbse"]
 albedo_color = Color(0.7514, 0.78, 0.6084, 1)
 
-[sub_resource type="BoxMesh" id="BoxMesh_6rkd2"]
+[sub_resource type="BoxMesh" id="BoxMesh_pkg7o"]
 size = Vector3(0.2, 0.1, 0.1)
 
-[sub_resource type="Curve" id="Curve_ql5c0"]
+[sub_resource type="Curve" id="Curve_gbfbk"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.454545, 0.910112), -0.507058, -0.507058, 0, 0, Vector2(0.630682, 0.382023), -3.62547, -3.62547, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 4
 
@@ -23,7 +23,7 @@ _bundled = {
 "node_count": 1,
 "node_paths": [],
 "nodes": PackedInt32Array(-1, -1, 17, 0, -1, 16, 1, 0, 2, 1, 3, 2, 4, 3, 5, 4, 6, 5, 7, 6, 8, 7, 9, 8, 10, 5, 11, 9, 12, 10, 13, 11, 14, 12, 15, 13, 16, 14, 0),
-"variants": [SubResource("StandardMaterial3D_ctcih"), false, 20, 0.65, true, 1.0, 0.6, SubResource("BoxMesh_6rkd2"), 180.0, Vector3(0, 0, 0), 2.5, 3.45, 6.875, 6.915, SubResource("Curve_ql5c0")],
+"variants": [SubResource("StandardMaterial3D_dwbse"), false, 20, 0.65, true, 1.0, 0.6, SubResource("BoxMesh_pkg7o"), 180.0, Vector3(0, 0, 0), 2.5, 3.45, 6.875, 6.915, SubResource("Curve_gbfbk")],
 "version": 3
 }
 

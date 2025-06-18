@@ -102,8 +102,9 @@ func _physics_process(_delta: float) -> void:
 		if referencetime - cpscounter[i] < 100:
 			currentcps += 1
 	$/root/World/GUI/HUD/Layers/CPS.text = "CPS: " + str(currentcps)
-
-	attack_ray.target_position = -camera.transform.basis.z * reach 
+	cps_factor = (-log(currentcps+1)/log(10))/2 + 1
+	attack_ray.target_position = -camera.transform.basis.z * reach * cps_factor
+	
 
 	check_death()
 

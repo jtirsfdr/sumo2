@@ -33,6 +33,7 @@ var kb_factor: float = 0.7
 var wtap_kb_factor: float = 1.0
 var block: float = 0.0
 var max_block: float = 1
+var cps_factor: float = 1
 
 signal entity_died
 
@@ -115,6 +116,7 @@ func on_hit(hitvectorarg: Vector3) -> void:
 	if block > max_block:
 		hitvector = hitvectorarg
 	else:
+		print(block)
 		hitvector = hitvectorarg * 0.8
 	if invincible:
 		pass
