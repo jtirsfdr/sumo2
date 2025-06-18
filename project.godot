@@ -13,7 +13,8 @@ config_version=5
 config/name="sumo2"
 run/main_scene="res://world.tscn"
 config/features=PackedStringArray("4.4", "Forward Plus")
-boot_splash/bg_color=Color(1, 1, 1, 1)
+boot_splash/bg_color=Color(0, 0, 0, 1)
+boot_splash/fullsize=false
 boot_splash/image="uid://b7xm3hyuyqagx"
 
 [autoload]
