@@ -1,0 +1,29 @@
+[gd_scene load_steps=4 format=3 uid="uid://coekptro8mxyx"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ctcih"]
+albedo_color = Color(0.7514, 0.78, 0.6084, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_6rkd2"]
+size = Vector3(0.2, 0.1, 0.1)
+
+[sub_resource type="Curve" id="Curve_ql5c0"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.454545, 0.910112), -0.507058, -0.507058, 0, 0, Vector2(0.630682, 0.382023), -3.62547, -3.62547, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[node name="LandParticles" type="CPUParticles3D"]
+material_override = SubResource("StandardMaterial3D_ctcih")
+emitting = false
+amount = 20
+lifetime = 0.65
+one_shot = true
+explosiveness = 1.0
+randomness = 0.6
+mesh = SubResource("BoxMesh_6rkd2")
+spread = 180.0
+flatness = 1.0
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = 2.5
+initial_velocity_max = 3.45
+damping_min = 6.875
+damping_max = 6.915
+scale_amount_curve = SubResource("Curve_ql5c0")

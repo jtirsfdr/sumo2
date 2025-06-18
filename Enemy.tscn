@@ -1,0 +1,39 @@
+[gd_scene load_steps=7 format=3 uid="uid://bjwb8ycltqxd1"]
+
+[ext_resource type="PackedScene" uid="uid://basw678sew3rr" path="res://Entity.tscn" id="1_ek4vt"]
+[ext_resource type="Script" uid="uid://nj88tja5jq8t" path="res://enemy.gd" id="2_fnp7o"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ctcih"]
+albedo_color = Color(0.7514, 0.78, 0.6084, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_6rkd2"]
+size = Vector3(0.2, 0.1, 0.1)
+
+[sub_resource type="Curve" id="Curve_ql5c0"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.454545, 0.910112), -0.507058, -0.507058, 0, 0, Vector2(0.630682, 0.382023), -3.62547, -3.62547, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="PackedScene" id="PackedScene_s7bn3"]
+resource_local_to_scene = true
+_bundled = {
+"conn_count": 0,
+"conns": PackedInt32Array(),
+"editable_instances": [],
+"names": PackedStringArray("LandParticles", "material_override", "emitting", "amount", "lifetime", "one_shot", "explosiveness", "randomness", "mesh", "spread", "flatness", "gravity", "initial_velocity_min", "initial_velocity_max", "damping_min", "damping_max", "scale_amount_curve", "CPUParticles3D"),
+"node_count": 1,
+"node_paths": [],
+"nodes": PackedInt32Array(-1, -1, 17, 0, -1, 16, 1, 0, 2, 1, 3, 2, 4, 3, 5, 4, 6, 5, 7, 6, 8, 7, 9, 8, 10, 5, 11, 9, 12, 10, 13, 11, 14, 12, 15, 13, 16, 14, 0),
+"variants": [SubResource("StandardMaterial3D_ctcih"), false, 20, 0.65, true, 1.0, 0.6, SubResource("BoxMesh_6rkd2"), 180.0, Vector3(0, 0, 0), 2.5, 3.45, 6.875, 6.915, SubResource("Curve_ql5c0")],
+"version": 3
+}
+
+[node name="Enemy" instance=ExtResource("1_ek4vt")]
+script = ExtResource("2_fnp7o")
+land_particles_tscn = SubResource("PackedScene_s7bn3")
+
+[node name="StrafeTimer" parent="." index="2"]
+autostart = true
+
+[node name="InvincibleTimer" parent="." index="5"]
+wait_time = 0.5
+one_shot = true

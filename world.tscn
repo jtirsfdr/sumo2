@@ -1,0 +1,644 @@
+[gd_scene load_steps=17 format=3 uid="uid://c5s7406nngvh1"]
+
+[ext_resource type="PackedScene" uid="uid://bvnenjekuy77y" path="res://Player.tscn" id="1_f3sb7"]
+[ext_resource type="PackedScene" uid="uid://bjwb8ycltqxd1" path="res://Enemy.tscn" id="2_fj7yv"]
+[ext_resource type="Script" uid="uid://crr2dndc1vh3x" path="res://gui.gd" id="3_tlwt5"]
+[ext_resource type="Texture2D" uid="uid://b41xbksos0aqf" path="res://crosshair.png" id="4_aqk2v"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_gv5m4"]
+sky_top_color = Color(0.90792, 0.8536, 0.97, 1)
+sky_horizon_color = Color(0.5848, 0.67048, 0.68, 1)
+sky_curve = 0.172305
+ground_bottom_color = Color(0.1092, 0.120987, 0.13, 1)
+ground_horizon_color = Color(0.584314, 0.670588, 0.678431, 1)
+sun_angle_max = 12.13
+sun_curve = 0.487349
+
+[sub_resource type="Sky" id="Sky_gv5m4"]
+sky_material = SubResource("ProceduralSkyMaterial_gv5m4")
+
+[sub_resource type="Environment" id="Environment_gv5m4"]
+background_mode = 2
+sky = SubResource("Sky_gv5m4")
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_f3sb7"]
+height = 0.3
+radius = 20.0
+
+[sub_resource type="Gradient" id="Gradient_tlwt5"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0.031746, 0.134921, 0.333333, 0.507937, 0.603175)
+colors = PackedColorArray(0.36, 0.13032, 0.1224, 1, 0.36, 0.24912, 0.1224, 1, 0.34812, 0.36, 0.1224, 1, 0.13428, 0.36, 0.1224, 1, 0.3408, 0.71, 0.67308, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_aqk2v"]
+gradient = SubResource("Gradient_tlwt5")
+width = 2048
+height = 2048
+fill = 1
+fill_from = Vector2(0.25, 0.752)
+fill_to = Vector2(0.457895, 0.426316)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_036b0"]
+albedo_texture = SubResource("GradientTexture2D_aqk2v")
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_fj7yv"]
+material = SubResource("StandardMaterial3D_036b0")
+top_radius = 20.0
+bottom_radius = 20.0
+height = 0.3
+radial_segments = 256
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tlwt5"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_036b0"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_aqk2v"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_dwbse"]
+
+[node name="World" type="Node3D"]
+
+[node name="Skybox" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_gv5m4")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Skybox"]
+transform = Transform3D(0.760972, -0.210013, -0.613853, 0.10641, -0.892944, 0.43741, -0.639998, -0.398177, -0.657158, 0, 7.35462, 0)
+light_color = Color(0.85, 0.731, 0.732983, 1)
+light_angular_distance = 4.55
+light_bake_mode = 1
+directional_shadow_mode = 0
+
+[node name="Stage" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Stage"]
+shape = SubResource("CylinderShape3D_f3sb7")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Stage"]
+mesh = SubResource("CylinderMesh_fj7yv")
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="Player" parent="." instance=ExtResource("1_f3sb7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 15)
+
+[node name="Enemy" parent="." instance=ExtResource("2_fj7yv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -16.905)
+
+[node name="GUI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1600.0
+offset_bottom = 900.0
+script = ExtResource("3_tlwt5")
+
+[node name="Menus" type="Control" parent="GUI"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="MainMenu" type="VBoxContainer" parent="GUI/Menus"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.4
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 444.0
+offset_top = 137.0
+offset_right = 1116.0
+offset_bottom = 701.5
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Title" type="Label" parent="GUI/Menus/MainMenu"]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 20
+theme_override_font_sizes/font_size = 160
+text = "Sumo V2"
+horizontal_alignment = 1
+
+[node name="Gap" type="HSeparator" parent="GUI/Menus/MainMenu"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/separator = SubResource("StyleBoxEmpty_tlwt5")
+
+[node name="PlayButton" type="Button" parent="GUI/Menus/MainMenu"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 64
+text = "Play"
+
+[node name="SettingsButton" type="Button" parent="GUI/Menus/MainMenu"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "Settings"
+
+[node name="ExitButton" type="Button" parent="GUI/Menus/MainMenu"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "Exit"
+
+[node name="Settings" type="VBoxContainer" parent="GUI/Menus"]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.4
+anchor_right = 0.5
+anchor_bottom = 0.4
+offset_left = 398.5
+offset_top = 54.25
+offset_right = 1161.5
+offset_bottom = 784.25
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SettingsLabel" type="Label" parent="GUI/Menus/Settings"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 64
+text = "Settings"
+horizontal_alignment = 1
+
+[node name="TopGap" type="HSeparator" parent="GUI/Menus/Settings"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/separator = SubResource("StyleBoxEmpty_036b0")
+
+[node name="SettingsGrid" type="GridContainer" parent="GUI/Menus/Settings"]
+layout_mode = 2
+columns = 3
+
+[node name="Sensitivity" type="Label" parent="GUI/Menus/Settings/SettingsGrid"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Sensitivity"
+
+[node name="Gap" type="VSeparator" parent="GUI/Menus/Settings/SettingsGrid"]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 3
+theme_override_styles/separator = SubResource("StyleBoxEmpty_aqk2v")
+
+[node name="SensitivitySel" type="LineEdit" parent="GUI/Menus/Settings/SettingsGrid"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+placeholder_text = "1"
+
+[node name="PlayerReach" type="Label" parent="GUI/Menus/Settings/SettingsGrid"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Player Reach"
+
+[node name="Gap2" type="VSeparator" parent="GUI/Menus/Settings/SettingsGrid"]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 3
+theme_override_styles/separator = SubResource("StyleBoxEmpty_aqk2v")
+
+[node name="PlayerReachSel" type="LineEdit" parent="GUI/Menus/Settings/SettingsGrid"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+placeholder_text = "3"
+
+[node name="EnemyReach" type="Label" parent="GUI/Menus/Settings/SettingsGrid"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Enemy Reach"
+
+[node name="Gap3" type="VSeparator" parent="GUI/Menus/Settings/SettingsGrid"]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 3
+theme_override_styles/separator = SubResource("StyleBoxEmpty_aqk2v")
+
+[node name="EnemyReachSel" type="LineEdit" parent="GUI/Menus/Settings/SettingsGrid"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+placeholder_text = "3"
+
+[node name="SimulatedPing" type="Label" parent="GUI/Menus/Settings/SettingsGrid"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Simulated Ping"
+
+[node name="Gap4" type="VSeparator" parent="GUI/Menus/Settings/SettingsGrid"]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 3
+theme_override_styles/separator = SubResource("StyleBoxEmpty_aqk2v")
+
+[node name="PingSel" type="LineEdit" parent="GUI/Menus/Settings/SettingsGrid"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+placeholder_text = "50"
+
+[node name="StrafeFactor" type="Label" parent="GUI/Menus/Settings/SettingsGrid"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Strafe Speed Factor"
+
+[node name="Gap5" type="VSeparator" parent="GUI/Menus/Settings/SettingsGrid"]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 3
+theme_override_styles/separator = SubResource("StyleBoxEmpty_aqk2v")
+
+[node name="StrafeSel" type="LineEdit" parent="GUI/Menus/Settings/SettingsGrid"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+placeholder_text = "1"
+
+[node name="ToggleSprint" type="Label" parent="GUI/Menus/Settings/SettingsGrid"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Toggle Sprint"
+
+[node name="Gap6" type="VSeparator" parent="GUI/Menus/Settings/SettingsGrid"]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 3
+theme_override_styles/separator = SubResource("StyleBoxEmpty_aqk2v")
+
+[node name="ToggleSprintButton" type="Button" parent="GUI/Menus/Settings/SettingsGrid"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+toggle_mode = true
+button_pressed = true
+text = "Enabled"
+
+[node name="CPSReduction" type="Label" parent="GUI/Menus/Settings/SettingsGrid"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "High CPS Reduces Knockback Taken"
+
+[node name="Gap7" type="VSeparator" parent="GUI/Menus/Settings/SettingsGrid"]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 3
+theme_override_styles/separator = SubResource("StyleBoxEmpty_aqk2v")
+
+[node name="CPSReductionButton" type="Button" parent="GUI/Menus/Settings/SettingsGrid"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+toggle_mode = true
+text = "Disabled"
+
+[node name="Block" type="Label" parent="GUI/Menus/Settings/SettingsGrid"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Block Increases Knockback Given"
+
+[node name="Gap9" type="VSeparator" parent="GUI/Menus/Settings/SettingsGrid"]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 3
+theme_override_styles/separator = SubResource("StyleBoxEmpty_aqk2v")
+
+[node name="BlockButton" type="Button" parent="GUI/Menus/Settings/SettingsGrid"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+toggle_mode = true
+text = "Disabled"
+
+[node name="WTap" type="Label" parent="GUI/Menus/Settings/SettingsGrid"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "W Tap"
+
+[node name="Gap8" type="VSeparator" parent="GUI/Menus/Settings/SettingsGrid"]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 3
+theme_override_styles/separator = SubResource("StyleBoxEmpty_aqk2v")
+
+[node name="WTapButton" type="Button" parent="GUI/Menus/Settings/SettingsGrid"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+toggle_mode = true
+text = "Disabled"
+
+[node name="InstantRematch" type="Label" parent="GUI/Menus/Settings/SettingsGrid"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Instant Rematch"
+
+[node name="Gap10" type="VSeparator" parent="GUI/Menus/Settings/SettingsGrid"]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 3
+theme_override_styles/separator = SubResource("StyleBoxEmpty_aqk2v")
+
+[node name="InstantRematchButton" type="Button" parent="GUI/Menus/Settings/SettingsGrid"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+toggle_mode = true
+button_pressed = true
+text = "Enabled"
+
+[node name="BottomGap2" type="HSeparator" parent="GUI/Menus/Settings/SettingsGrid"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/separator = SubResource("StyleBoxEmpty_036b0")
+
+[node name="ControlsButton" type="Button" parent="GUI/Menus/Settings"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Controls"
+
+[node name="BottomGap" type="HSeparator" parent="GUI/Menus/Settings"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/separator = SubResource("StyleBoxEmpty_036b0")
+
+[node name="MainMenuButton" type="Button" parent="GUI/Menus/Settings"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Back to Menu"
+
+[node name="Controls" type="VBoxContainer" parent="GUI/Menus"]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.4
+anchor_right = 0.5
+anchor_bottom = 0.4
+offset_left = 399.0
+offset_top = 30.0
+offset_right = 1162.0
+offset_bottom = 810.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ControlsLabel" type="Label" parent="GUI/Menus/Controls"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 64
+text = "Controls"
+horizontal_alignment = 1
+
+[node name="TopGap" type="HSeparator" parent="GUI/Menus/Controls"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxEmpty_036b0")
+
+[node name="GridContainer" type="GridContainer" parent="GUI/Menus/Controls"]
+layout_mode = 2
+columns = 3
+
+[node name="Attack" type="Label" parent="GUI/Menus/Controls/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 32
+text = "Attack"
+
+[node name="Gap" type="VSeparator" parent="GUI/Menus/Controls/GridContainer"]
+custom_minimum_size = Vector2(294, 0)
+layout_mode = 2
+size_flags_horizontal = 6
+theme_override_styles/separator = SubResource("StyleBoxEmpty_dwbse")
+
+[node name="AttackButton" type="Button" parent="GUI/Menus/Controls/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "Mouse 1"
+
+[node name="Block" type="Label" parent="GUI/Menus/Controls/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 32
+text = "Block"
+
+[node name="Gap2" type="VSeparator" parent="GUI/Menus/Controls/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 6
+theme_override_styles/separator = SubResource("StyleBoxEmpty_dwbse")
+
+[node name="BlockButton" type="Button" parent="GUI/Menus/Controls/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "Mouse 2"
+
+[node name="Sprint" type="Label" parent="GUI/Menus/Controls/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 32
+text = "Sprint"
+
+[node name="Gap7" type="VSeparator" parent="GUI/Menus/Controls/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 6
+theme_override_styles/separator = SubResource("StyleBoxEmpty_dwbse")
+
+[node name="SprintButton" type="Button" parent="GUI/Menus/Controls/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "Shift"
+
+[node name="ToggleSprint" type="Label" parent="GUI/Menus/Controls/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 32
+text = "Toggle Sprint"
+
+[node name="Gap8" type="VSeparator" parent="GUI/Menus/Controls/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 6
+theme_override_styles/separator = SubResource("StyleBoxEmpty_dwbse")
+
+[node name="ToggleSprintButton" type="Button" parent="GUI/Menus/Controls/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "Tab"
+
+[node name="Jump" type="Label" parent="GUI/Menus/Controls/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 32
+text = "Jump"
+
+[node name="Gap9" type="VSeparator" parent="GUI/Menus/Controls/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 6
+theme_override_styles/separator = SubResource("StyleBoxEmpty_dwbse")
+
+[node name="JumpButton" type="Button" parent="GUI/Menus/Controls/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "Space"
+
+[node name="Forwards" type="Label" parent="GUI/Menus/Controls/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 32
+text = "Move Forwards"
+
+[node name="Gap3" type="VSeparator" parent="GUI/Menus/Controls/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 6
+theme_override_styles/separator = SubResource("StyleBoxEmpty_dwbse")
+
+[node name="ForwardsButton" type="Button" parent="GUI/Menus/Controls/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "W"
+
+[node name="Left" type="Label" parent="GUI/Menus/Controls/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 32
+text = "Move Left"
+
+[node name="Gap5" type="VSeparator" parent="GUI/Menus/Controls/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 6
+theme_override_styles/separator = SubResource("StyleBoxEmpty_dwbse")
+
+[node name="LeftButton" type="Button" parent="GUI/Menus/Controls/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "A"
+
+[node name="Backwards" type="Label" parent="GUI/Menus/Controls/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 32
+text = "Move Backwards"
+
+[node name="Gap4" type="VSeparator" parent="GUI/Menus/Controls/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 6
+theme_override_styles/separator = SubResource("StyleBoxEmpty_dwbse")
+
+[node name="BackwardsButton" type="Button" parent="GUI/Menus/Controls/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "S"
+
+[node name="Right" type="Label" parent="GUI/Menus/Controls/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 32
+text = "Move Right"
+
+[node name="Gap6" type="VSeparator" parent="GUI/Menus/Controls/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 6
+theme_override_styles/separator = SubResource("StyleBoxEmpty_dwbse")
+
+[node name="RightButton" type="Button" parent="GUI/Menus/Controls/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "D"
+
+[node name="TopGap3" type="HSeparator" parent="GUI/Menus/Controls"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/separator = SubResource("StyleBoxEmpty_036b0")
+
+[node name="SettingsButton" type="Button" parent="GUI/Menus/Controls"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Settings"
+
+[node name="TopGap2" type="HSeparator" parent="GUI/Menus/Controls"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxEmpty_036b0")
+
+[node name="MenuButton" type="Button" parent="GUI/Menus/Controls"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Menu"
+
+[node name="HUD" type="AspectRatioContainer" parent="GUI"]
+visible = false
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -600.0
+offset_right = 600.0
+offset_bottom = 900.0
+grow_horizontal = 2
+
+[node name="Layers" type="VBoxContainer" parent="GUI/HUD"]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="EnemyReach" type="Label" parent="GUI/HUD/Layers"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 32
+text = "Enemy Reach:"
+
+[node name="CPS" type="Label" parent="GUI/HUD/Layers"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 32
+text = "CPS: "
+
+[node name="ToggleSprint" type="Label" parent="GUI/HUD/Layers"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 32
+text = "Toggle Sprint: On"
+
+[node name="CenterContainer" type="CenterContainer" parent="GUI/HUD"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Crosshair" type="Sprite2D" parent="GUI/HUD/CenterContainer"]
+texture = ExtResource("4_aqk2v")
+
+[node name="InitTimer" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="pressed" from="GUI/Menus/MainMenu/PlayButton" to="GUI" method="_on_play_button_pressed"]
+[connection signal="pressed" from="GUI/Menus/MainMenu/SettingsButton" to="GUI" method="_on_settings_button_pressed"]
+[connection signal="pressed" from="GUI/Menus/MainMenu/ExitButton" to="GUI" method="_on_exit_button_pressed"]
+[connection signal="text_changed" from="GUI/Menus/Settings/SettingsGrid/SensitivitySel" to="Player" method="_on_sensitivity_sel_text_changed"]
+[connection signal="toggled" from="GUI/Menus/Settings/SettingsGrid/ToggleSprintButton" to="GUI" method="_on_settings_option_button_pressed" binds= ["ToggleSprintButton"]]
+[connection signal="toggled" from="GUI/Menus/Settings/SettingsGrid/CPSReductionButton" to="GUI" method="_on_settings_option_button_pressed" binds= ["CPSReductionButton"]]
+[connection signal="toggled" from="GUI/Menus/Settings/SettingsGrid/BlockButton" to="GUI" method="_on_settings_option_button_pressed" binds= ["BlockButton"]]
+[connection signal="toggled" from="GUI/Menus/Settings/SettingsGrid/WTapButton" to="GUI" method="_on_settings_option_button_pressed" binds= ["WTapButton"]]
+[connection signal="toggled" from="GUI/Menus/Settings/SettingsGrid/InstantRematchButton" to="GUI" method="_on_settings_option_button_pressed" binds= ["InstantRematchButton"]]
+[connection signal="pressed" from="GUI/Menus/Settings/ControlsButton" to="GUI" method="_on_controls_menu_button_pressed"]
+[connection signal="pressed" from="GUI/Menus/Settings/MainMenuButton" to="GUI" method="_on_main_menu_button_pressed"]
+[connection signal="pressed" from="GUI/Menus/Controls/GridContainer/AttackButton" to="GUI" method="_on_player_control_button_pressed" binds= ["AttackButton"]]
+[connection signal="pressed" from="GUI/Menus/Controls/GridContainer/BlockButton" to="GUI" method="_on_player_control_button_pressed" binds= ["BlockButton"]]
+[connection signal="pressed" from="GUI/Menus/Controls/GridContainer/SprintButton" to="GUI" method="_on_player_control_button_pressed" binds= ["SprintButton"]]
+[connection signal="pressed" from="GUI/Menus/Controls/GridContainer/ToggleSprintButton" to="GUI" method="_on_player_control_button_pressed" binds= ["ToggleSprintButton"]]
+[connection signal="pressed" from="GUI/Menus/Controls/GridContainer/JumpButton" to="GUI" method="_on_player_control_button_pressed" binds= ["JumpButton"]]
+[connection signal="pressed" from="GUI/Menus/Controls/GridContainer/ForwardsButton" to="GUI" method="_on_player_control_button_pressed" binds= ["ForwardsButton"]]
+[connection signal="pressed" from="GUI/Menus/Controls/GridContainer/LeftButton" to="GUI" method="_on_player_control_button_pressed" binds= ["LeftButton"]]
+[connection signal="pressed" from="GUI/Menus/Controls/GridContainer/BackwardsButton" to="GUI" method="_on_player_control_button_pressed" binds= ["BackwardsButton"]]
+[connection signal="pressed" from="GUI/Menus/Controls/GridContainer/RightButton" to="GUI" method="_on_player_control_button_pressed" binds= ["RightButton"]]
+[connection signal="pressed" from="GUI/Menus/Controls/SettingsButton" to="GUI" method="_on_settings_button_pressed"]
+[connection signal="pressed" from="GUI/Menus/Controls/MenuButton" to="GUI" method="_on_main_menu_button_pressed"]
