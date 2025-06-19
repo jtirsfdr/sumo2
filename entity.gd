@@ -23,8 +23,8 @@ var direction: Vector3
 var hitvector: Vector3
 var hitspeed: Vector3 = Vector3.ZERO
 var strafe: int = 2
-var turnfactor: int = 10 #higher = shallower turns
-var shallowfactor: float = 0.5
+var turnfactor: int = 25 #higher = shallower
+var shallowfactor: float = 1.2 #multiplier
 var wish_sprinting: bool = true
 var landed: bool = false
 var sprint_reset: bool = true
@@ -88,13 +88,13 @@ func move(delta: float) -> void:
 				speed.x = cos(PI/turnfactor)*speed.x - sin(PI/turnfactor)*speed.z
 				speed.z = cos(PI/turnfactor)*speed.z + sin(PI/turnfactor)*speed.x
 			1: # shallower turn
-				speed.x = cos(PI/turnfactor*shallowfactor)*speed.x - sin(PI/turnfactor*shallowfactor)*speed.z
-				speed.z = cos(PI/turnfactor*shallowfactor)*speed.z + sin(PI/turnfactor*shallowfactor)*speed.x
+				speed.x = cos(PI/(turnfactor*shallowfactor))*speed.x - sin(PI/(turnfactor*shallowfactor))*speed.z
+				speed.z = cos(PI/(turnfactor*shallowfactor))*speed.z + sin(PI/(turnfactor*shallowfactor))*speed.x
 			2:
 				pass
 			3: 
-				speed.x = cos(PI/turnfactor*shallowfactor)*speed.x + sin(PI/turnfactor*shallowfactor)*speed.z
-				speed.z = cos(PI/turnfactor*shallowfactor)*speed.z - sin(PI/turnfactor*shallowfactor)*speed.x
+				speed.x = cos(PI/(turnfactor*shallowfactor))*speed.x + sin(PI/(turnfactor*shallowfactor))*speed.z
+				speed.z = cos(PI/(turnfactor*shallowfactor))*speed.z - sin(PI/(turnfactor*shallowfactor))*speed.x
 			4: 
 
 				speed.x = cos(PI/turnfactor)*speed.x + sin(PI/turnfactor)*speed.z

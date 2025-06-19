@@ -25,7 +25,7 @@ signal sprint_toggled(sprinting: bool)
 func _ready() -> void:
 	gui.toggle_sprint_toggled.connect(on_toggle_sprint_toggled)
 	enemy.hit_player.connect(self.on_hit)
-	#Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	auto_run = true
 	cpscounter.resize(maxcps + 1)
 
 func _input(event: InputEvent) -> void:
@@ -95,14 +95,14 @@ func _process(delta: float) -> void:
 	move_and_slide()
 
 func _physics_process(_delta: float) -> void:
-
+	print(strafe)
 	referencetime = int(Time.get_unix_time_from_system() * 100)
 	currentcps = 0
 	for i in maxcps:
 		if referencetime - cpscounter[i] < 100:
 			currentcps += 1
 	$/root/World/GUI/HUD/Layers/CPS.text = "CPS: " + str(currentcps)
-	cps_factor = (-log(currentcps+1)/log(10))/2 + 1
+	cps_factor = 1/((-log(currentcps+1)/log(10))/2 + 1)
 	attack_ray.target_position = -camera.transform.basis.z * reach * cps_factor
 	
 
