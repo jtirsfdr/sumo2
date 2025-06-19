@@ -21,8 +21,12 @@ func _physics_process(delta: float) -> void:
 		return
 	sprint_reset = true #bots cant w tap
 	if auto_run == true:
-		direction.x = player.position.x - self.position.x
-		direction.z = player.position.z - self.position.z
+		if sqrt(global_position.x ** 2 + global_position.z ** 2) > 19:
+			direction.x = -self.global_position.x / 5 + player.position.x - self.position.x
+			direction.z = -self.global_position.z / 5 + player.position.z - self.position.z
+		else:
+			direction.x = player.position.x - self.position.x
+			direction.z = player.position.z - self.position.z
 	if $RayCast3D is RayCast3D: 
 		var ray: RayCast3D = $RayCast3D
 		ray.target_position = (player.global_position - self.global_position).normalized() * reach/3

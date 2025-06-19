@@ -9,7 +9,6 @@ extends Entity
 @onready var camera: Camera3D = $Camera3D
 @onready var attack_ray: RayCast3D = $RayCast3D
 
-
 var walk_fov: float = 90
 var sprint_fov: float = walk_fov * 1.2
 var fov_changing: bool = false
@@ -27,6 +26,7 @@ func _ready() -> void:
 	enemy.hit_player.connect(self.on_hit)
 	auto_run = true
 	cpscounter.resize(maxcps + 1)
+	reach = 3
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
@@ -39,11 +39,21 @@ func _process(delta: float) -> void:
 	if Globals.paused == true:
 		return
 
+	if $HitRotateTimer.is_stopped():
+		camera.rotation.z = 0
+	else:
+		camera.rotation.z = $HitRotateTimer.time_left * 0.3
+
 	if auto_run == false:
 		var input_dir: Vector2 = Input.get_vector("left", "right", "forwards", "backwards")
 		direction = transform.basis * Vector3(input_dir.x, 0, input_dir.y).normalized()
 	else:
-		direction = enemy.position - self.position
+		if sqrt(global_position.x ** 2 + global_position.z ** 2) > 19:
+			direction.x = -self.global_position.x / 5 + enemy.position.x - self.position.x
+			direction.z = -self.global_position.z / 5 + enemy.position.z - self.position.z
+		else:
+			direction.x = enemy.position.x - self.position.x
+			direction.z = enemy.position.z - self.position.z
 
 	if Input.is_action_just_pressed("togglesprint"):
 		toggle_sprint = not toggle_sprint
@@ -77,10 +87,10 @@ func _process(delta: float) -> void:
 		if attack_ray.is_colliding():
 			if attack_ray.get_collider() is Enemy:
 				if wtap_reset:
-					hit_enemy.emit(-get_global_transform().basis.z.normalized() * kb_factor * wtap_kb_factor)
+					hit_enemy.emit(-get_global_transform().basis.z.normalized() * kb_factor * wtap_kb_factor * cps_factor)
 					wtap_reset = false
 				else:
-					hit_enemy.emit(-get_global_transform().basis.z.normalized() * kb_factor)
+					hit_enemy.emit(-get_global_transform().basis.z.normalized() * kb_factor * cps_factor)
 
 	if Input.is_action_pressed("block"):
 		block = 0
@@ -95,16 +105,14 @@ func _process(delta: float) -> void:
 	move_and_slide()
 
 func _physics_process(_delta: float) -> void:
-	print(strafe)
 	referencetime = int(Time.get_unix_time_from_system() * 100)
 	currentcps = 0
 	for i in maxcps:
 		if referencetime - cpscounter[i] < 100:
 			currentcps += 1
 	$/root/World/GUI/HUD/Layers/CPS.text = "CPS: " + str(currentcps)
-	cps_factor = 1/((-log(currentcps+1)/log(10))/2 + 1)
-	attack_ray.target_position = -camera.transform.basis.z * reach * cps_factor
-	
+	cps_factor = 1/((-log(currentcps+1)/log(10))/2 + 1) #more cps more kb
+	attack_ray.target_position = -camera.transform.basis.z * reach
 
 	check_death()
 

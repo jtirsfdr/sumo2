@@ -29,7 +29,7 @@ var wish_sprinting: bool = true
 var landed: bool = false
 var sprint_reset: bool = true
 var wtap_reset: bool = true
-var kb_factor: float = 0.7
+var kb_factor: float = 1
 var wtap_kb_factor: float = 1.0
 var block: float = 0.0
 var max_block: float = 1
@@ -142,6 +142,8 @@ func _on_lag_timer_timeout() -> void:
 	hitspeed.x = hitvector.x * 20
 	velocity.y = 3
 	hitspeed.z = hitvector.z * 20
+	print(hitspeed)
+	$HitRotateTimer.start()
 	
 func _on_invincible_timer_timeout() -> void:
 	$Mesh.mesh.material.albedo_color = Color(0.75, 0.75, 0.75, 0)

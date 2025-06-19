@@ -1,5 +1,7 @@
 TODO:
 
+Simplify + improve movement / automovement code
+
 Add demo gif
 
 Add releases

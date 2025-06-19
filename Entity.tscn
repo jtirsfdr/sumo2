@@ -1,16 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://basw678sew3rr"]
+[gd_scene load_steps=4 format=3 uid="uid://basw678sew3rr"]
 
 [ext_resource type="Script" uid="uid://dh1w5l3edwiw3" path="res://entity.gd" id="1_6e8rh"]
 [ext_resource type="PackedScene" uid="uid://coekptro8mxyx" path="res://LandParticles.tscn" id="2_ctcih"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_gv5m4"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ql5c0"]
-resource_local_to_scene = true
-albedo_color = Color(0.75, 0.75, 0.75, 1)
-
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_f3sb7"]
-material = SubResource("StandardMaterial3D_ql5c0")
 
 [node name="Entity" type="CharacterBody3D"]
 script = ExtResource("1_6e8rh")
@@ -18,9 +11,6 @@ land_particles_tscn = ExtResource("2_ctcih")
 
 [node name="Hitbox" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_gv5m4")
-
-[node name="Mesh" type="MeshInstance3D" parent="."]
-mesh = SubResource("CapsuleMesh_f3sb7")
 
 [node name="StrafeTimer" type="Timer" parent="."]
 
@@ -34,6 +24,10 @@ wait_time = 0.2
 
 [node name="SprintTimer" type="Timer" parent="."]
 wait_time = 0.5
+
+[node name="HitRotateTimer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
 
 [connection signal="timeout" from="StrafeTimer" to="." method="_on_strafe_timer_timeout"]
 [connection signal="timeout" from="LagTimer" to="." method="_on_lag_timer_timeout"]

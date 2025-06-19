@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://bjwb8ycltqxd1"]
+[gd_scene load_steps=9 format=3 uid="uid://bjwb8ycltqxd1"]
 
 [ext_resource type="PackedScene" uid="uid://basw678sew3rr" path="res://Entity.tscn" id="1_ek4vt"]
 [ext_resource type="Script" uid="uid://nj88tja5jq8t" path="res://enemy.gd" id="2_fnp7o"]
@@ -27,13 +27,22 @@ _bundled = {
 "version": 3
 }
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s7bn3"]
+albedo_color = Color(0.75, 0.75, 0.75, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_2hac7"]
+material = SubResource("StandardMaterial3D_s7bn3")
+
 [node name="Enemy" instance=ExtResource("1_ek4vt")]
 script = ExtResource("2_fnp7o")
 land_particles_tscn = SubResource("PackedScene_s7bn3")
 
-[node name="StrafeTimer" parent="." index="2"]
+[node name="StrafeTimer" parent="." index="1"]
 autostart = true
 
-[node name="InvincibleTimer" parent="." index="5"]
+[node name="InvincibleTimer" parent="." index="4"]
 wait_time = 0.5
 one_shot = true
+
+[node name="Mesh" type="MeshInstance3D" parent="." index="6"]
+mesh = SubResource("CapsuleMesh_2hac7")
