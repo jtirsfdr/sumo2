@@ -1,7 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://bjwb8ycltqxd1"]
+[gd_scene load_steps=10 format=3 uid="uid://bjwb8ycltqxd1"]
 
-[ext_resource type="PackedScene" uid="uid://basw678sew3rr" path="res://Entity.tscn" id="1_ek4vt"]
-[ext_resource type="Script" uid="uid://nj88tja5jq8t" path="res://enemy.gd" id="2_fnp7o"]
+[ext_resource type="PackedScene" uid="uid://basw678sew3rr" path="res://scenes/Entity.tscn" id="1_ek4vt"]
+[ext_resource type="Script" uid="uid://nj88tja5jq8t" path="res://scripts/enemy.gd" id="2_fnp7o"]
+[ext_resource type="AudioStream" uid="uid://c25rhf0bo0xsd" path="res://assets/hitsound.mp3" id="3_mpr68"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dwbse"]
 albedo_color = Color(0.7514, 0.78, 0.6084, 1)
@@ -46,3 +47,6 @@ one_shot = true
 
 [node name="Mesh" type="MeshInstance3D" parent="." index="6"]
 mesh = SubResource("CapsuleMesh_2hac7")
+
+[node name="Hitsound" type="AudioStreamPlayer" parent="." index="8"]
+stream = ExtResource("3_mpr68")

@@ -12,11 +12,17 @@ var changing_button: String
 signal toggle_sprint_toggled(toggled: bool)
 signal cps_reduction_toggled(toggled: bool)
 signal w_tap_toggled(toggled: bool)
+signal option_updated
 
 func _ready() -> void:
 	globals.game_paused.connect(self.on_game_paused)
 	globals.game_unpaused.connect(self.on_game_unpaused)
 	player.sprint_toggled.connect(self.on_sprint_toggled)
+	load_settings()
+
+func load_settings() -> void:
+	#for node in $Menus/Settings/ScrollContainer/SettingsGrid.
+	print($Menus/Settings/ScrollContainer/SettingsGrid/AutoMoveButton.button_pressed)
 
 func _input(event: InputEvent) -> void:
 	#Checks if modifying controls, and takes next key pressed as new control
@@ -51,6 +57,7 @@ func _input(event: InputEvent) -> void:
 		changing_button = ""
 
 func _on_exit_button_pressed() -> void:
+	option_updated.emit()
 	get_tree().quit()
 
 func _on_settings_button_pressed() -> void:
@@ -85,52 +92,26 @@ func on_game_unpaused() -> void:
 	settings_menu.visible = false
 	controls_menu.visible = false
 	$HUD.visible = true
-	
-#MERGE NEXT FOUR FUNCTIONS INTO 1 WITH (BUTTON, TOGGLED, SIGNAL) AS ARGUMENTS
+	option_updated.emit()
+
 func _on_settings_option_button_pressed(toggled_on: bool, button_name: String) -> void:
-	var button: Button = get_node("Menus/Settings/SettingsGrid/" + button_name)
+	var button: Button = get_node("Menus/Settings/ScrollContainer/SettingsGrid/" + button_name)
 	if toggled_on:
 		button.text = "Enabled"
 		match button_name:
 			"ToggleSprintButton":
 				toggle_sprint_toggled.emit(true)
 				$HUD/Layers/ToggleSprint.visible = true
+			"AutoMoveButton":
+				$"/root/World/Player".auto_run = true
 	else:
 		button.text = "Disabled"
 		match button_name:
 			"ToggleSprintButton":
 				$HUD/Layers/ToggleSprint.visible = false
 				toggle_sprint_toggled.emit(false)
-
-
-func _on_sprint_button_toggled(toggled_on: bool) -> void:
-	if toggled_on:
-		$Menus/Settings/GridContainer/SprintButton.text = "Yeah :)"
-		toggle_sprint_toggled.emit(true)
-		$HUD/Layers/ToggleSprint.visible = true
-	else:
-		$Menus/Settings/GridContainer/SprintButton.text = " No :(  "
-		$HUD/Layers/ToggleSprint.visible = false
-
-func _on_cps_reduction_button_toggled(toggled_on: bool) -> void:
-	if toggled_on:
-		$Menus/Settings/GridContainer/CPSReductionButton.text = "Yeah :)"
-	else:
-		$Menus/Settings/GridContainer/CPSReductionButton.text = " No :(  "
-
-func _on_w_tap_button_toggled(toggled_on: bool) -> void:
-	if toggled_on:
-		$Menus/Settings/GridContainer/CPSReductionButton.text = "Yeah :)"
-	else:
-		$Menus/Settings/GridContainer/CPSReductionButton.text = " No :(  "
-
-
-func _on_alt_click_label_toggled(toggled_on: bool) -> void:
-	if toggled_on:
-		$Menus/Settings/GridContainer/AltClickButton.text = "Yeah :)"
-	else:
-		$Menus/Settings/GridContainer/AltClickButton.text = " No :(  "
-
+			"AutoMoveButton":
+				$"/root/World/Player".auto_run = false
 
 func _on_controls_menu_button_pressed() -> void:
 	controls_menu.visible = true

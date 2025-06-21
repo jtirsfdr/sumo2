@@ -130,6 +130,12 @@ func on_hit(hitvectorarg: Vector3) -> void:
 			invincible = true
 			sprinting = false
 			sprint_reset = false
+			var hurtsound = get_node_or_null("Hurtsound")
+			if hurtsound is AudioStreamPlayer:
+				hurtsound.play()
+			var hitsound = get_node_or_null("Hitsound")
+			if hitsound is AudioStreamPlayer:
+				hitsound.play()
 			$Mesh.mesh.material.albedo_color = Color(0.75, 0, 0, 0)
 
 func rng() -> void:

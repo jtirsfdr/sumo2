@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://basw678sew3rr"]
 
-[ext_resource type="Script" uid="uid://dh1w5l3edwiw3" path="res://entity.gd" id="1_6e8rh"]
-[ext_resource type="PackedScene" uid="uid://coekptro8mxyx" path="res://LandParticles.tscn" id="2_ctcih"]
+[ext_resource type="Script" uid="uid://dh1w5l3edwiw3" path="res://scripts/entity.gd" id="1_6e8rh"]
+[ext_resource type="PackedScene" uid="uid://coekptro8mxyx" path="res://scenes/LandParticles.tscn" id="2_ctcih"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_gv5m4"]
 
