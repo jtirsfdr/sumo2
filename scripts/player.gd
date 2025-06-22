@@ -5,7 +5,6 @@ extends Entity
 @export var maxcps: int = 30
 
 @onready var enemy: Enemy = get_node("../").find_child("Enemy", true, false)
-@onready var gui: GUI = $"/root/World/GUI"
 @onready var camera: Camera3D = $Camera3D
 @onready var attack_ray: RayCast3D = $RayCast3D
 
@@ -17,16 +16,32 @@ var cpsticker: int = 0
 var cpscounter: Array[int]
 var currentcps: int 
 var toggle_sprint: bool = true
+var cpsboost: bool
+var blockboost: bool
+var wtapboost: bool
 
 signal hit_enemy(hitvector: Vector3)
 signal sprint_toggled(sprinting: bool)
 
 func _ready() -> void:
-	gui.toggle_sprint_toggled.connect(on_toggle_sprint_toggled)
+	#gui.togglesprintbutton_toggled.connect(on_toggle_sprint_toggled)
+	gui.options_updated.connect(_update_settings)
 	enemy.hit_player.connect(self.on_hit)
-	auto_run = true
+
 	cpscounter.resize(maxcps + 1)
 	reach = 3
+
+func _update_settings() -> void:
+	sensitivity = float(settings.get_node("SensitivitySel").text)
+	reach = float(settings.get_node("PlayerReachSel").text)
+	ping = float(settings.get_node("PingSel").text) / 1000
+	walk_speed = float(settings.get_node("SpeedSel").text)
+	kb_factor = float(settings.get_node("KBFactorSel").text)
+	toggle_sprint = settings.get_node("ToggleSprintButton").button_pressed
+	cpsboost = settings.get_node("CPSKBButton").button_pressed
+	blockboost = settings.get_node("BlockButton").button_pressed
+	wtapboost = settings.get_node("WTapButton").button_pressed
+	auto_run = settings.get_node("AutoMoveButton").button_pressed
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
@@ -87,13 +102,22 @@ func _process(delta: float) -> void:
 		if attack_ray.is_colliding():
 			if attack_ray.get_collider() is Enemy:
 				if wtap_reset:
-					hit_enemy.emit(-get_global_transform().basis.z.normalized() * kb_factor * wtap_kb_factor * cps_factor)
-					wtap_reset = false
+					if wtapboost:
+						print("boost") #fix the hit factors not changing vectors
+						hit_enemy.emit(-get_global_transform().basis.z.normalized() * kb_factor * wtap_kb_factor * cps_factor)
+						wtap_reset = false
+					else:
+						hit_enemy.emit(-get_global_transform().basis.z.normalized() * kb_factor * cps_factor)
+						wtap_reset = false
 				else:
+
 					hit_enemy.emit(-get_global_transform().basis.z.normalized() * kb_factor * cps_factor)
 
-	if Input.is_action_pressed("block"):
-		block = 0
+	if Input.is_action_just_pressed("block"):
+		if blockboost:
+			block = 0
+		else:
+			block = 100
 
 	if Input.is_action_pressed("jump"):
 		if is_on_floor():
@@ -111,7 +135,10 @@ func _physics_process(_delta: float) -> void:
 		if referencetime - cpscounter[i] < 100:
 			currentcps += 1
 	$/root/World/GUI/HUD/Layers/CPS.text = "CPS: " + str(currentcps)
-	cps_factor = 1/((-log(currentcps+1)/log(10))/2 + 1) #more cps more kb
+	if cpsboost:
+		cps_factor = 1/((-log(currentcps+1)/log(10))/2 + 1) #more cps more kb
+	else:
+		cps_factor = 1
 	attack_ray.target_position = -camera.transform.basis.z * reach
 
 	check_death()

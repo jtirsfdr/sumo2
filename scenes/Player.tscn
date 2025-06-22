@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://basw678sew3rr" path="res://scenes/Entity.tscn" id="1_4k08i"]
 [ext_resource type="Script" uid="uid://3p8hvuu6l3b7" path="res://scripts/player.gd" id="2_tpkq3"]
-[ext_resource type="AudioStream" uid="uid://brgestmahnsug" path="res://assets/hurtsound.mp3" id="3_kne1u"]
+[ext_resource type="AudioStream" uid="uid://bpmvkijsdk8ff" path="res://assets/hurtsound.mp3" id="3_kne1u"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ctcih"]
 albedo_color = Color(0.7514, 0.78, 0.6084, 1)

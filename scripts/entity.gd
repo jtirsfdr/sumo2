@@ -1,8 +1,11 @@
 class_name Entity
 extends CharacterBody3D
 
-@export var land_particles_tscn: PackedScene
+@onready var gui: GUI = $"/root/World/GUI"
+@onready var settings: = $"/root/World/GUI/Menus/Settings/ScrollContainer/SettingsGrid"
 
+
+@export var land_particles_tscn: PackedScene
 @export var max_speed: float
 @export var walk_speed: float = 4
 @export var sprint_factor: float = 1.6
@@ -30,7 +33,7 @@ var landed: bool = false
 var sprint_reset: bool = true
 var wtap_reset: bool = true
 var kb_factor: float = 1
-var wtap_kb_factor: float = 1.0
+var wtap_kb_factor: float = 1
 var block: float = 0.0
 var max_block: float = 1
 var cps_factor: float = 1
@@ -103,7 +106,6 @@ func move(delta: float) -> void:
 	hitspeed = hitspeed * (1-delta*2.4)
 	velocity.x = speed.x + hitspeed.x
 	velocity.z = speed.z + hitspeed.z
-	
 
 func _on_particle_finish(path: NodePath) -> void:
 	get_node(path).queue_free()
@@ -116,7 +118,7 @@ func on_hit(hitvectorarg: Vector3) -> void:
 	if block > max_block:
 		hitvector = hitvectorarg
 	else:
-		print(block)
+		#print(block)
 		hitvector = hitvectorarg * 0.8
 	if invincible:
 		pass
@@ -148,7 +150,7 @@ func _on_lag_timer_timeout() -> void:
 	hitspeed.x = hitvector.x * 20
 	velocity.y = 3
 	hitspeed.z = hitvector.z * 20
-	print(hitspeed)
+	#print(hitspeed)
 	$HitRotateTimer.start()
 	
 func _on_invincible_timer_timeout() -> void:

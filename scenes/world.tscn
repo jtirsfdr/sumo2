@@ -124,8 +124,6 @@ shape = SubResource("CylinderShape3D_f3sb7")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Stage"]
 mesh = SubResource("CylinderMesh_fj7yv")
 
-[node name="Timer" type="Timer" parent="."]
-
 [node name="Player" parent="." instance=ExtResource("1_f3sb7")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 15)
 land_particles_tscn = SubResource("PackedScene_aqk2v")
@@ -240,6 +238,7 @@ theme_override_styles/separator = SubResource("StyleBoxEmpty_aqk2v")
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
+text = "1"
 placeholder_text = "1"
 
 [node name="PlayerReach" type="Label" parent="GUI/Menus/Settings/ScrollContainer/SettingsGrid"]
@@ -257,6 +256,7 @@ theme_override_styles/separator = SubResource("StyleBoxEmpty_aqk2v")
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
+text = "3"
 placeholder_text = "3"
 
 [node name="EnemyReach" type="Label" parent="GUI/Menus/Settings/ScrollContainer/SettingsGrid"]
@@ -274,6 +274,7 @@ theme_override_styles/separator = SubResource("StyleBoxEmpty_aqk2v")
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
+text = "3"
 placeholder_text = "3"
 
 [node name="SimulatedPing" type="Label" parent="GUI/Menus/Settings/ScrollContainer/SettingsGrid"]
@@ -291,12 +292,13 @@ theme_override_styles/separator = SubResource("StyleBoxEmpty_aqk2v")
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
+text = "50"
 placeholder_text = "50"
 
-[node name="StrafeFactor" type="Label" parent="GUI/Menus/Settings/ScrollContainer/SettingsGrid"]
+[node name="SpeedFactor" type="Label" parent="GUI/Menus/Settings/ScrollContainer/SettingsGrid"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
-text = "Strafe Speed Factor"
+text = "Speed Factor"
 
 [node name="Gap5" type="VSeparator" parent="GUI/Menus/Settings/ScrollContainer/SettingsGrid"]
 layout_mode = 2
@@ -304,11 +306,12 @@ size_flags_horizontal = 6
 size_flags_vertical = 3
 theme_override_styles/separator = SubResource("StyleBoxEmpty_aqk2v")
 
-[node name="StrafeSel" type="LineEdit" parent="GUI/Menus/Settings/ScrollContainer/SettingsGrid"]
+[node name="SpeedSel" type="LineEdit" parent="GUI/Menus/Settings/ScrollContainer/SettingsGrid"]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
-placeholder_text = "1"
+text = "4"
+placeholder_text = "4"
 
 [node name="KBFactor" type="Label" parent="GUI/Menus/Settings/ScrollContainer/SettingsGrid"]
 layout_mode = 2
@@ -325,6 +328,7 @@ theme_override_styles/separator = SubResource("StyleBoxEmpty_aqk2v")
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
+text = "1"
 placeholder_text = "1"
 
 [node name="ToggleSprint" type="Label" parent="GUI/Menus/Settings/ScrollContainer/SettingsGrid"]
@@ -345,7 +349,7 @@ toggle_mode = true
 button_pressed = true
 text = "Enabled"
 
-[node name="CPSReduction" type="Label" parent="GUI/Menus/Settings/ScrollContainer/SettingsGrid"]
+[node name="CPSKBLabel" type="Label" parent="GUI/Menus/Settings/ScrollContainer/SettingsGrid"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
 text = "High CPS Increases KB Given"
@@ -356,7 +360,7 @@ size_flags_horizontal = 6
 size_flags_vertical = 3
 theme_override_styles/separator = SubResource("StyleBoxEmpty_aqk2v")
 
-[node name="CPSReductionButton" type="Button" parent="GUI/Menus/Settings/ScrollContainer/SettingsGrid"]
+[node name="CPSKBButton" type="Button" parent="GUI/Menus/Settings/ScrollContainer/SettingsGrid"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
 toggle_mode = true
@@ -678,14 +682,6 @@ grow_horizontal = 2
 layout_mode = 2
 size_flags_horizontal = 0
 
-[node name="EnemyReach" type="Label" parent="GUI/HUD/Layers"]
-layout_mode = 2
-size_flags_vertical = 0
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 8
-theme_override_font_sizes/font_size = 32
-text = "Enemy Reach:"
-
 [node name="CPS" type="Label" parent="GUI/HUD/Layers"]
 layout_mode = 2
 size_flags_vertical = 0
@@ -710,19 +706,10 @@ size_flags_vertical = 4
 [node name="Crosshair" type="Sprite2D" parent="GUI/HUD/CenterContainer"]
 texture = ExtResource("4_aqk2v")
 
-[node name="InitTimer" type="Timer" parent="."]
-one_shot = true
-
 [connection signal="pressed" from="GUI/Menus/MainMenu/PlayButton" to="GUI" method="_on_play_button_pressed"]
 [connection signal="pressed" from="GUI/Menus/MainMenu/SettingsButton" to="GUI" method="_on_settings_button_pressed"]
 [connection signal="pressed" from="GUI/Menus/MainMenu/ExitButton" to="GUI" method="_on_exit_button_pressed"]
 [connection signal="text_changed" from="GUI/Menus/Settings/ScrollContainer/SettingsGrid/SensitivitySel" to="Player" method="_on_sensitivity_sel_text_changed"]
-[connection signal="toggled" from="GUI/Menus/Settings/ScrollContainer/SettingsGrid/ToggleSprintButton" to="GUI" method="_on_settings_option_button_pressed" binds= ["ToggleSprintButton"]]
-[connection signal="toggled" from="GUI/Menus/Settings/ScrollContainer/SettingsGrid/CPSReductionButton" to="GUI" method="_on_settings_option_button_pressed" binds= ["CPSReductionButton"]]
-[connection signal="toggled" from="GUI/Menus/Settings/ScrollContainer/SettingsGrid/BlockButton" to="GUI" method="_on_settings_option_button_pressed" binds= ["BlockButton"]]
-[connection signal="toggled" from="GUI/Menus/Settings/ScrollContainer/SettingsGrid/WTapButton" to="GUI" method="_on_settings_option_button_pressed" binds= ["WTapButton"]]
-[connection signal="toggled" from="GUI/Menus/Settings/ScrollContainer/SettingsGrid/InstantRematchButton" to="GUI" method="_on_settings_option_button_pressed" binds= ["InstantRematchButton"]]
-[connection signal="toggled" from="GUI/Menus/Settings/ScrollContainer/SettingsGrid/AutoMoveButton" to="GUI" method="_on_settings_option_button_pressed" binds= ["AutoMoveButton"]]
 [connection signal="pressed" from="GUI/Menus/Settings/ControlsButton" to="GUI" method="_on_controls_menu_button_pressed"]
 [connection signal="pressed" from="GUI/Menus/Settings/MainMenuButton" to="GUI" method="_on_main_menu_button_pressed"]
 [connection signal="pressed" from="GUI/Menus/Controls/GridContainer/AttackButton" to="GUI" method="_on_player_control_button_pressed" binds= ["AttackButton"]]

@@ -5,12 +5,16 @@ extends Entity
 
 signal hit_player(hitvector: Vector3)
 
+func _update_settings() -> void:
+	reach = float(settings.get_node("EnemyReachSel").text)
+
 func _ready() -> void:
 	auto_run = true
 	sprinting = true
 	reach = 5
-	player.hit_enemy.connect(self.on_hit)
-	
+	player.hit_enemy.connect(on_hit)
+	gui.options_updated.connect(_update_settings)
+
 func _process(_delta: float) -> void:
 	if Globals.paused == true:
 		return

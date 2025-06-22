@@ -6,23 +6,60 @@ extends Control
 @onready var main_menu: VBoxContainer = $Menus/MainMenu
 @onready var settings_menu: VBoxContainer = $Menus/Settings
 @onready var controls_menu: VBoxContainer = $Menus/Controls
-
+@onready var settings_options: GridContainer = $Menus/Settings/ScrollContainer/SettingsGrid
+@onready var option_signals: Dictionary = {}
 var changing_button: String 
 
-signal toggle_sprint_toggled(toggled: bool)
-signal cps_reduction_toggled(toggled: bool)
-signal w_tap_toggled(toggled: bool)
-signal option_updated
+#signal togglesprintbutton_toggled(toggled: bool)
+#signal cps_reduction_toggled(toggled: bool)
+#signal w_tap_toggled(toggled: bool)
+#signal enemyreachsel_changed(selection: String)
+signal options_updated
 
 func _ready() -> void:
 	globals.game_paused.connect(self.on_game_paused)
 	globals.game_unpaused.connect(self.on_game_unpaused)
 	player.sprint_toggled.connect(self.on_sprint_toggled)
+	for node in settings_options.get_children(true):
+		if node is LineEdit:
+			var s: String = node.name.to_lower() + "_changed"
+			option_signals[s] = Signal(self, s)
+			add_user_signal(s)
+			#connect(s, _on_sel_text_changed.bind(node.name))
+			node.text_changed.connect(_on_sel_text_changed.bind(node.name))
+		if node is Button:
+			#print(node.name)
+			node.toggled.connect(_on_button_toggled.bind(node.name))
+
+	options_updated.connect(_update_hud)
+	#emit_signal("pingsel_changed", "test")
 	load_settings()
 
+func _on_sel_text_changed(selection: String, button_name: String) -> void:
+	options_updated.emit() 
+
+func _on_button_toggled(toggled_on: bool, button_name: String):
+	var button: Button = get_node("Menus/Settings/ScrollContainer/SettingsGrid/" + button_name)
+	if toggled_on:
+		button.text = "Enabled"
+	else:
+		button.text = "Disabled"
+
+	options_updated.emit()
+
+func _update_hud() -> void:
+	$HUD/Layers/ToggleSprint.visible = $Menus/Settings/ScrollContainer/SettingsGrid/ToggleSprintButton.button_pressed
+
 func load_settings() -> void:
-	#for node in $Menus/Settings/ScrollContainer/SettingsGrid.
-	print($Menus/Settings/ScrollContainer/SettingsGrid/AutoMoveButton.button_pressed)
+	return
+	for node in $Menus/Settings/ScrollContainer/SettingsGrid.get_children(true):
+		if node is Button:
+			emit_signal(node.name.to_lower() + "_toggled", node.button_pressed)
+		if node is LineEdit:
+			if node.text == null:
+				emit_signal(node.name.to_lower() + "_toggled", node.placeholder_text)
+			else:
+				emit_signal(node.name.to_lower() + "_changed", node.text)
 
 func _input(event: InputEvent) -> void:
 	#Checks if modifying controls, and takes next key pressed as new control
@@ -57,7 +94,7 @@ func _input(event: InputEvent) -> void:
 		changing_button = ""
 
 func _on_exit_button_pressed() -> void:
-	option_updated.emit()
+	options_updated.emit()
 	get_tree().quit()
 
 func _on_settings_button_pressed() -> void:
@@ -92,26 +129,26 @@ func on_game_unpaused() -> void:
 	settings_menu.visible = false
 	controls_menu.visible = false
 	$HUD.visible = true
-	option_updated.emit()
+	options_updated.emit()
 
-func _on_settings_option_button_pressed(toggled_on: bool, button_name: String) -> void:
-	var button: Button = get_node("Menus/Settings/ScrollContainer/SettingsGrid/" + button_name)
-	if toggled_on:
-		button.text = "Enabled"
-		match button_name:
-			"ToggleSprintButton":
-				toggle_sprint_toggled.emit(true)
-				$HUD/Layers/ToggleSprint.visible = true
-			"AutoMoveButton":
-				$"/root/World/Player".auto_run = true
-	else:
-		button.text = "Disabled"
-		match button_name:
-			"ToggleSprintButton":
-				$HUD/Layers/ToggleSprint.visible = false
-				toggle_sprint_toggled.emit(false)
-			"AutoMoveButton":
-				$"/root/World/Player".auto_run = false
+#func _on_settings_option_button_pressed(toggled_on: bool, button_name: String) -> void:
+	#var button: Button = get_node("Menus/Settings/ScrollContainer/SettingsGrid/" + button_name)
+	#if toggled_on:
+		#button.text = "Enabled"
+		#match button_name:
+			#"ToggleSprintButton":
+				#togglesprintbutton_toggled.emit(true)
+				#$HUD/Layers/ToggleSprint.visible = true
+			#"AutoMoveButton":
+				#$"/root/World/Player".auto_run = true
+	#else:
+		#button.text = "Disabled"
+		#match button_name:
+			#"ToggleSprintButton":
+				#$HUD/Layers/ToggleSprint.visible = false
+				#togglesprintbutton_toggled.emit(false)
+			#"AutoMoveButton":
+				#$"/root/World/Player".auto_run = false
 
 func _on_controls_menu_button_pressed() -> void:
 	controls_menu.visible = true
